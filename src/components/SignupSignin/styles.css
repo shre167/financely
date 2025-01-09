@@ -1,0 +1,22 @@
+.signup-wrapper {
+    width: 50%;
+    max-width: 400px;
+    height: auto;
+    box-shadow: var(--shadow); /* Using the custom shadow variable */
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    background-color: white; /* Ensure contrast with shadow */
+}
+
+.title{
+    font-weight: 500;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.p-login{
+    text-align: center;
+    font-weight: 300;
+    font-size: .8rem;
+    margin: 0
+}

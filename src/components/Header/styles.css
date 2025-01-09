@@ -1,0 +1,28 @@
+.navbar {
+  position: sticky;
+  top:0;
+  left: 0;
+  padding: 1rem 1.5rem;
+  background-color: var(--theme);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index:1000;
+}
+
+.logo {
+  color: var(--white);
+  font-weight: 500;
+  margin: 0; /* Ensure no default margin */
+  font-size: 1rem;
+}
+
+.link {
+  opacity: 0.5;
+  cursor: pointer; /* Match font size of .logo for consistency */
+}
+
+.link:hover {
+  opacity: 1;
+  transition: all 0.3s;
+}
