@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Select, Table, Radio } from "antd";
-import searchImg from "../../assets/search.svg"
+import searchImg from "../../assets/search.svg";
 import { unparse } from "papaparse";
 import { parse } from "papaparse";
 import { toast } from "react-toastify";
+import "./styles.css";
 
 function TransactionsTable({
   transactions,
@@ -43,11 +44,10 @@ function TransactionsTable({
     },
   ];
 
-  // Filter transactions based on search input and type filter
   let filteredTransactions = transactions
     .map((item, index) => ({
       ...item,
-      key: index, // Add unique key if not already present
+      key: index,
     }))
     .filter(
       (item) =>
@@ -57,11 +57,11 @@ function TransactionsTable({
 
   let sortedTransactions = filteredTransactions.sort((a, b) => {
     if (sortKey === "date") {
-      return new Date(a.date) - new Date(b.date); // Sort by date
+      return new Date(a.date) - new Date(b.date);
     } else if (sortKey === "amount") {
-      return a.amount - b.amount; // Sort by amount
+      return a.amount - b.amount;
     } else {
-      return 0; // No sorting for other keys
+      return 0;
     }
   });
 
@@ -86,10 +86,7 @@ function TransactionsTable({
       parse(event.target.files[0], {
         header: true,
         complete: async function (results) {
-          // Now results.data is an array of objects representing your CSV rows
           for (const transaction of results.data) {
-            // Write each transaction to Firebase, you can use the addTransaction function here
-            console.log("Transactions", transaction);
             const newTransaction = {
               ...transaction,
               amount: parseFloat(transaction.amount),
@@ -107,23 +104,10 @@ function TransactionsTable({
   }
 
   return (
-    <div
-      style={{
-        width: "95%",
-        padding: "0rem 2rem",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: "1rem",
-          alignItems: "center",
-          marginBottom: "1rem",
-        }}
-      >
+    <div className="transactions-table-wrapper">
+      <div className="toolbar">
         <div className="input-flex">
-          <img src={searchImg} width="16" />
+          <img src={searchImg} alt="Search" width="16" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -137,58 +121,44 @@ function TransactionsTable({
           value={typeFilter}
           placeholder="Filter by type"
           allowClear
-          style={{ marginLeft: "10px", width: "200px" }}
         >
           <Option value="">All</Option>
           <Option value="income">Income</Option>
           <Option value="expense">Expense</Option>
         </Select>
       </div>
-      <div className="my-table">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            marginBottom: "1rem",
-          }}
-        >
-          <h2>My Transactions</h2>
 
-          <Radio.Group
-            className="input-radio"
-            onChange={(e) => setSortKey(e.target.value)}
-            value={sortKey}
-          >
-            <Radio.Button value="">No Sort</Radio.Button>
-            <Radio.Button value="date">Sort by Date</Radio.Button>
-            <Radio.Button value="amount">Sort by Amount</Radio.Button>
-          </Radio.Group>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "1rem",
-              width: "400px",
-            }}
-          >
-            <button className="btn" onClick={exportCSV}>
-              Export to CSV
-            </button>
-            <label for="file-csv" className="btn btn-blue">
-              Import from CSV
-            </label>
-            <input
-              id="file-csv"
-              type="file"
-              accept=".csv"
-              required
-              onChange={importFromCsv}
-              style={{ display: "none" }}
-            />
-          </div>
+      <div className="actions">
+        <h2>My Transactions</h2>
+
+        <Radio.Group
+          className="input-radio"
+          onChange={(e) => setSortKey(e.target.value)}
+          value={sortKey}
+        >
+          <Radio.Button value="">No Sort</Radio.Button>
+          <Radio.Button value="date">Sort by Date</Radio.Button>
+          <Radio.Button value="amount">Sort by Amount</Radio.Button>
+        </Radio.Group>
+
+        <div className="action-buttons">
+          <button className="btn" onClick={exportCSV}>
+            Export to CSV
+          </button>
+          <label htmlFor="file-csv" className="btn btn-blue">
+            Import from CSV
+          </label>
+          <input
+            id="file-csv"
+            type="file"
+            accept=".csv"
+            onChange={importFromCsv}
+            style={{ display: "none" }}
+          />
         </div>
+      </div>
+
+      <div className="table-container">
         <Table dataSource={sortedTransactions} columns={columns} />
       </div>
     </div>
