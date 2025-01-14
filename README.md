@@ -1,4 +1,5 @@
-Features of Financely
+##Features of Financely
+
 1. Transaction Management
 Add, view, and manage all your financial transactions in a tabular format.
 Each transaction includes details such as:
